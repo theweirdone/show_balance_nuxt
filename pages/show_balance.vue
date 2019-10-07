@@ -34,19 +34,25 @@
                 <ShowList title="Cancelled Shows" :shows="cancelledShows" />
             </div>
         </div>
+        <ShowModal
+            :is-card-modal-active="displayModal"
+            :season-info="currentSeasonToDisplay"
+        />
     </section>
 </template>
 
 <script>
 import ShowList from '~/components/ShowList';
 import HTTP from '~/plugins/ApiGetter.js';
+import ShowModal from '~/components/ShowModal';
 
 export default {
     name: 'ShowBalance',
     components: {
         ShowList,
+        ShowModal,
     },
-    data: () => {
+    data() {
         return {
             allShows: [],
             showsToDisplay: [],
@@ -58,6 +64,14 @@ export default {
             cancelledShows: [],
             errors: [],
         };
+    },
+    computed: {
+        displayModal() {
+            return this.$store.state.modal.displayModal;
+        },
+        currentSeasonToDisplay() {
+            return this.$store.state.modal.seasonInfo;
+        },
     },
     created() {
         HTTP.get('series?apikey=21d47040405041e29be8783d087f97a6')
@@ -82,6 +96,7 @@ export default {
 
                     tmpShow.seasons = show.seasons.map((season) => {
                         const tmpSeason = season;
+                        tmpSeason.showTitle = show.title;
                         tmpSeason.inProgress = false;
                         tmpSeason.hasFiles = false;
                         tmpSeason.hasAllFiles = false;

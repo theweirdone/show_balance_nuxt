@@ -1,8 +1,13 @@
 <template>
-    <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep">
+    <b-modal
+        :active.sync="isCardModalActive"
+        :width="640"
+        scroll="keep"
+        @close="closeModal"
+    >
         <div class="card">
             <header class="card-header">
-                <div class="card-header-title">Show Name Here</div>
+                <div class="card-header-title">{{ seasonInfo.showTitle }}</div>
             </header>
             <div class="card-content">
                 <ul>
@@ -16,10 +21,24 @@
 
 <script>
 export default {
-    data() {
-        return {
-            isCardModalActive: false,
-        };
+    props: {
+        isCardModalActive: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        seasonInfo: {
+            type: Object,
+            required: true,
+            default: () => {
+                return {};
+            },
+        },
+    },
+    methods: {
+        closeModal() {
+            this.$store.commit('modal/hideModal');
+        },
     },
 };
 </script>

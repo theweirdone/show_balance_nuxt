@@ -14,7 +14,7 @@
                             :key="season.seasonNumber"
                             class="tag is-rounded"
                             :class="classy(season)"
-                            @click="cardModal"
+                            @click="cardModal(season)"
                             >{{ season.seasonNumber }}
                         </span>
                     </div>
@@ -28,9 +28,6 @@
 </template>
 
 <script>
-import { ModalProgrammatic as Modal } from 'buefy';
-import ShowModal from '~/components/ShowModal';
-
 export default {
     props: {
         title: {
@@ -40,10 +37,14 @@ export default {
         shows: {
             type: Array,
             required: false,
+            default() {
+                return [];
+            },
         },
         description: {
             type: String,
             required: false,
+            default: '',
         },
     },
     methods: {
@@ -58,13 +59,9 @@ export default {
                 'is-light': !season.hasFiles,
             };
         },
-        cardModal: () => {
-            Modal.open({
-                parent: this,
-                component: ShowModal,
-                hasModalCard: true,
-                customClass: 'custom-class custom-class-2',
-            });
+        cardModal(season) {
+            this.$store.commit('modal/setSeasonInfo', season);
+            this.$store.commit('modal/showModal');
         },
     },
 };
