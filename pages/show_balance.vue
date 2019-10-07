@@ -82,7 +82,8 @@ export default {
                         }
                         if (
                             season.statistics.episodeFileCount ===
-                            season.statistics.totalEpisodeCount
+                                season.statistics.totalEpisodeCount &&
+                            season.statistics.sizeOnDisk !== 0
                         ) {
                             tmpSeason.hasAllFiles = true;
                         } else {
