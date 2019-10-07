@@ -13,12 +13,23 @@
                     :shows="returnedShows"
                     description="More than 1 season, latest season less than 5 episodes"
                 />
+                <ShowList
+                    title="Shows Missing Episodes"
+                    :shows="showsMissingEpisodes"
+                    description="Any show with at least one episode in a season"
+                />
             </div>
             <div class="column">
                 <h1 class="title is-2 has-text-centered">Show Balancer</h1>
                 <ShowList
+                    title="Shows With Seasons Ready to Move"
+                    :shows="showsWithSeasonsReadyToMove"
+                    description="More than 2 complete seasons"
+                />
+                <ShowList
                     title="Shows with Complete Seasons"
                     :shows="showsWithCompleteSeasons"
+                    description="More than 1 complete season"
                 />
                 <ShowList title="Cancelled Shows" :shows="cancelledShows" />
             </div>
@@ -42,6 +53,8 @@ export default {
             newShows: [],
             returnedShows: [],
             showsWithCompleteSeasons: [],
+            showsWithSeasonsReadyToMove: [],
+            showsMissingEpisodes: [],
             cancelledShows: [],
             errors: [],
         };
@@ -127,7 +140,8 @@ export default {
                                 if (
                                     season.statistics.episodeFileCount ===
                                         season.statistics.totalEpisodeCount &&
-                                    season.inProgress === false
+                                    season.inProgress === false &&
+                                    season.seasonNumber
                                 ) {
                                     return true;
                                 }
@@ -135,6 +149,26 @@ export default {
                             }
                         );
                         if (completeSeasons.length && show.hasFiles) {
+                            return true;
+                        }
+                        return false;
+                    }
+                );
+                const showsWithSeasonsReadyToMove = showsWithCompleteSeasons.filter(
+                    (show) => {
+                        const completeSeasons = show.seasons.filter(
+                            (season) => {
+                                if (
+                                    season.hasAllFiles &&
+                                    season.inProgress === false &&
+                                    season.seasonNumber !== 0
+                                ) {
+                                    return true;
+                                }
+                                return false;
+                            }
+                        );
+                        if (completeSeasons.length >= 2 && show.hasFiles) {
                             return true;
                         }
                         return false;
@@ -172,12 +206,52 @@ export default {
                         return false;
                     }
                 );
+                const showsMissingEpisodes = this.allShows.filter((show) => {
+                    const seasonsMissingEpisodes = show.seasons.filter(
+                        (season) => {
+                            if (
+                                season.hasFiles &&
+                                !season.hasAllFiles &&
+                                !season.inProgress &&
+                                season.seasonNumber &&
+                                season.missingEpisodes
+                            ) {
+                                return true;
+                            }
+                            return false;
+                        }
+                    );
+
+                    if (show.hasFiles && seasonsMissingEpisodes.length) {
+                        return true;
+                    }
+                    return false;
+                });
+                const sortedByTitle = function(a, b) {
+                    if (a.sortTitle < b.sortTitle) {
+                        return -1;
+                    }
+                    if (a.sortTitle > b.sortTitle) {
+                        return 1;
+                    }
+                    return 0;
+                };
                 // console.log(toUse);
-                this.cancelledShows = cancelledShowsReadyToMove;
-                this.showsToDisplay = toUse;
-                this.newShows = newShows;
-                this.returnedShows = returnedShows;
-                this.showsWithCompleteSeasons = showsWithCompleteSeasons;
+                this.cancelledShows = cancelledShowsReadyToMove.sort(
+                    sortedByTitle
+                );
+                this.showsToDisplay = toUse.sort(sortedByTitle);
+                this.newShows = newShows.sort(sortedByTitle);
+                this.returnedShows = returnedShows.sort(sortedByTitle);
+                this.showsWithCompleteSeasons = showsWithCompleteSeasons.sort(
+                    sortedByTitle
+                );
+                this.showsWithSeasonsReadyToMove = showsWithSeasonsReadyToMove.sort(
+                    sortedByTitle
+                );
+                this.showsMissingEpisodes = showsMissingEpisodes.sort(
+                    sortedByTitle
+                );
             })
             .catch((err) => {
                 this.errors.push(err);
