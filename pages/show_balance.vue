@@ -114,7 +114,8 @@ export default {
                             season.statistics.sizeOnDisk !== 0
                         ) {
                             tmpSeason.hasAllFiles = true;
-                        } else {
+                        }
+                        if (tmpSeason.hasFiles) {
                             tmpSeason.missingEpisodes =
                                 season.statistics.totalEpisodeCount -
                                 season.statistics.episodeFileCount;

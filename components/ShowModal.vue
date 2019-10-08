@@ -7,12 +7,20 @@
     >
         <div class="card">
             <header class="card-header">
-                <div class="card-header-title">{{ seasonInfo.showTitle }}</div>
+                <div class="card-header-title">
+                    {{ seasonInfo.showTitle }} Season
+                    {{ seasonInfo.seasonNumber }}
+                </div>
             </header>
             <div class="card-content">
                 <ul>
-                    <li>Episodes Missing</li>
-                    <li>Ready to Move</li>
+                    <li v-if="seasonInfo.missingEpisodes">
+                        {{ seasonInfo.missingEpisodes }} Episodes Missing
+                    </li>
+                    <li v-if="seasonInfo.hasAllFiles && !seasonInfo.inProgress">
+                        Ready to Move
+                    </li>
+                    <li v-if="seasonInfo.inProgress">In Progress</li>
                 </ul>
             </div>
         </div>
