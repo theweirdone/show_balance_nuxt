@@ -97,6 +97,7 @@ export default {
                     tmpShow.seasons = show.seasons.map((season) => {
                         const tmpSeason = season;
                         tmpSeason.showTitle = show.title;
+                        tmpSeason.showId = show.id;
                         tmpSeason.inProgress = false;
                         tmpSeason.hasFiles = false;
                         tmpSeason.hasAllFiles = false;

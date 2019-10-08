@@ -16,11 +16,29 @@
                 <ul>
                     <li v-if="seasonInfo.missingEpisodes">
                         {{ seasonInfo.missingEpisodes }} Episodes Missing
+                        <b-progress
+                            :value="
+                                seasonInfo.episodeStatistics.percentComplete
+                            "
+                            show-value
+                            format="percent"
+                            type="is-danger"
+                        ></b-progress>
                     </li>
                     <li v-if="seasonInfo.hasAllFiles && !seasonInfo.inProgress">
                         Ready to Move
                     </li>
-                    <li v-if="seasonInfo.inProgress">In Progress</li>
+                    <li v-if="seasonInfo.inProgress">
+                        In Progress
+                        <b-progress
+                            :value="
+                                seasonInfo.episodeStatistics.percentComplete
+                            "
+                            show-value
+                            format="percent"
+                            type="is-warning"
+                        ></b-progress>
+                    </li>
                 </ul>
             </div>
         </div>

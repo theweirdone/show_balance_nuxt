@@ -3,6 +3,7 @@ export const state = () => ({
     seasonInfo: {
         title: 'Show Title',
     },
+    episodesInfo: [],
 });
 
 export const mutations = {
@@ -18,5 +19,11 @@ export const mutations = {
     },
     setSeasonInfo(state, info) {
         state.seasonInfo = info;
+    },
+    setEpisodesInfo(state, info) {
+        state.episodesInfo = info;
+    },
+    clearEpisodesInfo(state) {
+        state.episodesInfo = [];
     },
 };

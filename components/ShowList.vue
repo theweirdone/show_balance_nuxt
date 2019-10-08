@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import HTTP from '~/plugins/ApiGetter.js';
+
 export default {
     props: {
         title: {
@@ -60,8 +62,41 @@ export default {
             };
         },
         cardModal(season) {
-            this.$store.commit('modal/setSeasonInfo', season);
-            this.$store.commit('modal/showModal');
+            const episodesPath = `episode?apikey=21d47040405041e29be8783d087f97a6&seriesId=${season.showId}`;
+            HTTP.get(episodesPath).then((episodeResponse) => {
+                const episodeData = episodeResponse.data;
+
+                const seasonEpisodes = episodeData.filter(
+                    (episode) => episode.seasonNumber === season.seasonNumber
+                );
+                const seasonEpisodesWithFiles = seasonEpisodes.filter(
+                    (episode) => episode.hasFile
+                );
+                const seasonEpisodesWithoutFiles = seasonEpisodes.filter(
+                    (episode) => episode.hasFile === false
+                );
+                const seasonEpisodesWithAirdates = seasonEpisodes.filter(
+                    (episode) => episode.airDate
+                );
+                season.episodeStatistics = {
+                    numberOfEpisodesWithFiles: seasonEpisodesWithFiles.length,
+                    numberOfEpisodesWithoutFiles:
+                        seasonEpisodesWithoutFiles.length,
+                    numberOfEpisodesWithAirdates:
+                        seasonEpisodesWithAirdates.length,
+                    numberOfEpisodesWithoutAirdates:
+                        seasonEpisodes.length -
+                        seasonEpisodesWithAirdates.length,
+                    percentComplete:
+                        (seasonEpisodesWithFiles.length /
+                            seasonEpisodes.length) *
+                        100,
+                    totalNumberOfEpisodes: seasonEpisodes.length,
+                };
+                season.episodeData = seasonEpisodes;
+                this.$store.commit('modal/setSeasonInfo', season);
+                this.$store.commit('modal/showModal');
+            });
         },
     },
 };
