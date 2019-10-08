@@ -1,6 +1,6 @@
 <template>
     <b-modal
-        :active.sync="isCardModalActive"
+        :active.sync="isModalActive"
         :width="640"
         scroll="keep"
         @close="closeModal"
@@ -41,6 +41,26 @@ export default {
             default: () => {
                 return {};
             },
+        },
+    },
+    data() {
+        return {
+            cardModalToggle: false,
+        };
+    },
+    computed: {
+        isModalActive: {
+            get() {
+                return this.cardModalToggle;
+            },
+            set(value) {
+                this.cardModalToggle = value;
+            },
+        },
+    },
+    watch: {
+        isCardModalActive(newVal) {
+            this.cardModalToggle = newVal;
         },
     },
     methods: {
