@@ -34,7 +34,7 @@
                 <ShowList title="Cancelled Shows" :shows="cancelledShows" />
             </div>
         </div>
-        <ShowModal
+        <SeasonModal
             :is-card-modal-active="displayModal"
             :season-info="currentSeasonToDisplay"
         />
@@ -44,13 +44,13 @@
 <script>
 import ShowList from '~/components/ShowList';
 import HTTP from '~/plugins/ApiGetter.js';
-import ShowModal from '~/components/ShowModal';
+import SeasonModal from '~/components/SeasonModal';
 
 export default {
     name: 'ShowBalance',
     components: {
         ShowList,
-        ShowModal,
+        SeasonModal,
     },
     data() {
         return {
