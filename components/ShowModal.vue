@@ -23,7 +23,17 @@
                             show-value
                             format="percent"
                             type="is-danger"
-                        ></b-progress>
+                        >
+                            {{
+                                seasonInfo.episodeStatistics
+                                    .numberOfEpisodesWithoutFiles
+                            }}
+                            of
+                            {{
+                                seasonInfo.episodeStatistics
+                                    .numberOfEpisodesWithAirdates
+                            }}
+                        </b-progress>
                     </li>
                     <li v-if="seasonInfo.hasAllFiles && !seasonInfo.inProgress">
                         Ready to Move
@@ -37,7 +47,17 @@
                             show-value
                             format="percent"
                             type="is-warning"
-                        ></b-progress>
+                        >
+                            {{
+                                seasonInfo.episodeStatistics
+                                    .numberOfEpisodesWithFiles
+                            }}
+                            of
+                            {{
+                                seasonInfo.episodeStatistics
+                                    .numberOfEpisodesWithAirdates
+                            }}
+                        </b-progress>
                     </li>
                 </ul>
             </div>
