@@ -253,6 +253,15 @@ export default {
                     }
                     return 0;
                 };
+                const sortedBySizeOnDisk = function(a, b) {
+                    if (a.sizeOnDisk < b.sizeOnDisk) {
+                        return 1;
+                    }
+                    if (a.sizeOnDisk > b.sizeOnDisk) {
+                        return -1;
+                    }
+                    return 0;
+                };
                 // console.log(toUse);
                 this.cancelledShows = cancelledShowsReadyToMove.sort(
                     sortedByTitle
@@ -264,7 +273,7 @@ export default {
                     sortedByTitle
                 );
                 this.showsWithSeasonsReadyToMove = showsWithSeasonsReadyToMove.sort(
-                    sortedByTitle
+                    sortedBySizeOnDisk
                 );
                 this.showsMissingEpisodes = showsMissingEpisodes.sort(
                     sortedByTitle
