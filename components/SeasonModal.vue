@@ -103,7 +103,7 @@ export default {
     },
     methods: {
         closeModal() {
-            this.$store.commit('modal/hideModal');
+            this.$store.commit('modal/hideSeasonModal');
         },
     },
 };

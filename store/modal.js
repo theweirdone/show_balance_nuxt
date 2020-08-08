@@ -1,6 +1,10 @@
 export const state = () => ({
-    displayModal: false,
+    displaySeasonModal: false,
+    displaySeriesModal: false,
     seasonInfo: {
+        title: 'Show Title',
+    },
+    seriesInfo: {
         title: 'Show Title',
     },
     episodesInfo: [],
@@ -8,17 +12,35 @@ export const state = () => ({
 
 export const mutations = {
     toggleDisplay(state) {
-        state.displayModal = !state.displayModal;
+        state.displaySeasonModal = !state.displaySeasonModal;
     },
-    showModal(state) {
-        state.displayModal = true;
+    showSeasonModal(state) {
+        state.displaySeasonModal = true;
     },
-    hideModal(state) {
-        state.displayModal = false;
+    hideSeasonModal(state) {
+        state.displaySeasonModal = false;
         state.seasonInfo = {};
+    },
+    showSeriesModal(state) {
+        state.displaySeriesModal = true;
+    },
+    hideSeriesModal(state) {
+        state.displaySeriesModal = false;
+        state.seriesInfo = {};
     },
     setSeasonInfo(state, info) {
         state.seasonInfo = info;
+    },
+    setSeriesSeasonMovingJobId(state, data) {
+        const seasonId = data.seasonId;
+        const jobId = data.jobId;
+        const season = state.seriesInfo.seasons.find(
+            (season) => (season.id = seasonId)
+        );
+        season.movingJobId = jobId;
+    },
+    setSeriesInfo(state, info) {
+        state.seriesInfo = info;
     },
     setEpisodesInfo(state, info) {
         state.episodesInfo = info;

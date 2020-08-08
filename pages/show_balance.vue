@@ -34,8 +34,12 @@
                 <ShowList title="Cancelled Shows" :shows="cancelledShows" />
             </div>
         </div>
+        <SeriesModal
+            :is-card-modal-active="displaySeriesModal"
+            :series-info="currentSeriesToDisplay"
+        />
         <SeasonModal
-            :is-card-modal-active="displayModal"
+            :is-card-modal-active="displaySeasonModal"
             :season-info="currentSeasonToDisplay"
         />
     </section>
@@ -45,12 +49,14 @@
 import ShowList from '~/components/ShowList';
 import HTTP from '~/plugins/ApiGetter.js';
 import SeasonModal from '~/components/SeasonModal';
+import SeriesModal from '~/components/SeriesModal';
 
 export default {
     name: 'ShowBalance',
     components: {
         ShowList,
         SeasonModal,
+        SeriesModal,
     },
     data() {
         return {
@@ -66,11 +72,17 @@ export default {
         };
     },
     computed: {
-        displayModal() {
-            return this.$store.state.modal.displayModal;
+        displaySeasonModal() {
+            return this.$store.state.modal.displaySeasonModal;
+        },
+        displaySeriesModal() {
+            return this.$store.state.modal.displaySeriesModal;
         },
         currentSeasonToDisplay() {
             return this.$store.state.modal.seasonInfo;
+        },
+        currentSeriesToDisplay() {
+            return this.$store.state.modal.seriesInfo;
         },
     },
     created() {
@@ -102,6 +114,8 @@ export default {
                         tmpSeason.hasFiles = false;
                         tmpSeason.hasAllFiles = false;
                         tmpSeason.missingEpisodes = 0;
+                        tmpSeason.readyToMove = false;
+                        tmpSeason.movingJobId = false;
                         if (season.statistics.nextAiring) {
                             tmpSeason.inProgress = true;
                             tmpShow.seasonInProgress = true;
@@ -121,6 +135,10 @@ export default {
                                 season.statistics.totalEpisodeCount -
                                 season.statistics.episodeFileCount;
                         }
+                        if (tmpSeason.hasAllFiles && !tmpSeason.inProgress) {
+                            tmpSeason.readyToMove = true;
+                        }
+
                         return tmpSeason;
                     });
 
@@ -155,8 +173,7 @@ export default {
                         const completeSeasons = show.seasons.filter(
                             (season) => {
                                 if (
-                                    season.statistics.episodeFileCount ===
-                                        season.statistics.totalEpisodeCount &&
+                                    season.hasAllFiles &&
                                     season.inProgress === false &&
                                     season.seasonNumber
                                 ) {
@@ -281,6 +298,8 @@ export default {
             })
             .catch((err) => {
                 this.errors.push(err);
+                // eslint-disable-next-line
+                console.log(err);
             });
         // eslint-disable-next-line
         // console.log('created');
