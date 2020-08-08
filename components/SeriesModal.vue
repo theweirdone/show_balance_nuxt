@@ -2,8 +2,8 @@
     <b-modal
         :active.sync="isModalActive"
         :width="640"
-        scroll="keep"
         @close="closeModal"
+        scroll="keep"
     >
         <div class="card">
             <header class="card-header">
@@ -21,9 +21,6 @@
                                     (s) => s.seasonId === season.seasonNumber
                                 )
                             "
-                            type="is-primary"
-                            outlined
-                            size="is-small"
                             @click="
                                 checkMovingStatus(
                                     seasonsMoving.find(
@@ -32,15 +29,18 @@
                                     ).jobId
                                 )
                             "
+                            type="is-primary"
+                            outlined
+                            size="is-small"
                         >
                             Moving
                         </b-button>
                         <b-button
                             v-if="season.readyToMove && !season.monitored"
+                            @click="moveSeason(season)"
                             type="is-info"
                             outlined
                             size="is-small"
-                            @click="moveSeason(season)"
                         >
                             Move
                         </b-button>
@@ -170,16 +170,18 @@ export default {
                 const episodeFileName = splitPath.pop();
                 seasonPath = splitPath.join('\\');
             }
+            const data = {
+                path: seasonPath,
+                sid: crypto
+                    .createHash('md5')
+                    .update(seasonPath)
+                    .digest('hex'),
+                id: season.seasonNumber,
+            };
+            console.table(data);
             // if successfully got seasonPath
             if (seasonPath !== '') {
-                HTTP.post('/move', {
-                    path: seasonPath,
-                    sid: crypto
-                        .createHash('md5')
-                        .update(seasonPath)
-                        .digest('hex'),
-                    id: season.seasonNumber,
-                })
+                HTTP.post('/move/season', data)
                     .then((response) => {
                         // eslint-disable-next-line
                         console.log(response);

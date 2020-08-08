@@ -2,8 +2,8 @@
     <b-modal
         :active.sync="isModalActive"
         :width="640"
-        scroll="keep"
         @close="closeModal"
+        scroll="keep"
     >
         <div class="card">
             <header class="card-header">

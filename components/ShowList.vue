@@ -7,16 +7,16 @@
         <div class="show-list">
             <ul v-if="shows.length">
                 <li v-for="show in shows" :key="show.id">
-                    <div class="show-title" @click="seriesModal(show)">
+                    <div @click="seriesModal(show)" class="show-title">
                         {{ show.title }}
                     </div>
                     <div v-if="show.seasons" class="tags">
                         <span
                             v-for="season in show.seasons"
                             :key="season.seasonNumber"
-                            class="tag is-rounded"
                             :class="classy(season)"
                             @click="seasonModal(season)"
+                            class="tag is-rounded"
                             >{{ season.seasonNumber }}
                         </span>
                     </div>

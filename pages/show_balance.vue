@@ -4,34 +4,34 @@
             <div class="column">
                 <h1 class="title is-2 has-text-centered">Show Statistics</h1>
                 <ShowList
-                    title="New Shows"
                     :shows="newShows"
+                    title="New Shows"
                     description="Only 1 season with less than 5 episodes"
                 />
                 <ShowList
-                    title="Returned Shows"
                     :shows="returnedShows"
+                    title="Returned Shows"
                     description="More than 1 season, latest season less than 5 episodes"
                 />
                 <ShowList
-                    title="Shows Missing Episodes"
                     :shows="showsMissingEpisodes"
+                    title="Shows Missing Episodes"
                     description="Any show with at least one episode in a season"
                 />
             </div>
             <div class="column">
                 <h1 class="title is-2 has-text-centered">Show Balancer</h1>
                 <ShowList
-                    title="Shows With Seasons Ready to Move"
                     :shows="showsWithSeasonsReadyToMove"
+                    title="Shows With Seasons Ready to Move"
                     description="More than 2 complete seasons"
                 />
                 <ShowList
-                    title="Shows with Complete Seasons"
                     :shows="showsWithCompleteSeasons"
+                    title="Shows with Complete Seasons"
                     description="More than 1 complete season"
                 />
-                <ShowList title="Cancelled Shows" :shows="cancelledShows" />
+                <ShowList :shows="cancelledShows" title="Cancelled Shows" />
             </div>
         </div>
         <SeriesModal
@@ -103,7 +103,7 @@ export default {
                         (image) => image.coverType === 'fanart'
                     );
                     if (showPoster) {
-                        tmpShow.posterUrl = `http://192.168.1.171:8989${showPoster.url}`;
+                        tmpShow.posterUrl = `http://192.168.1.169:8989${showPoster.url}`;
                     }
 
                     tmpShow.seasons = show.seasons.map((season) => {
@@ -287,7 +287,7 @@ export default {
                 this.newShows = newShows.sort(sortedByTitle);
                 this.returnedShows = returnedShows.sort(sortedByTitle);
                 this.showsWithCompleteSeasons = showsWithCompleteSeasons.sort(
-                    sortedByTitle
+                    sortedBySizeOnDisk
                 );
                 this.showsWithSeasonsReadyToMove = showsWithSeasonsReadyToMove.sort(
                     sortedBySizeOnDisk
