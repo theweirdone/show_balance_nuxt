@@ -261,7 +261,7 @@ export default {
                     }
                     return false;
                 });
-                const sortedByTitle = function(a, b) {
+                const sortedByTitle = function (a, b) {
                     if (a.sortTitle < b.sortTitle) {
                         return -1;
                     }
@@ -270,7 +270,7 @@ export default {
                     }
                     return 0;
                 };
-                const sortedBySizeOnDisk = function(a, b) {
+                const sortedBySizeOnDisk = function (a, b) {
                     if (a.sizeOnDisk < b.sizeOnDisk) {
                         return 1;
                     }
